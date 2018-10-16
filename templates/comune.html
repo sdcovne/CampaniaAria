@@ -1,0 +1,159 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+
+<style>
+    html,body{
+      width:100%;
+      margin:0;
+        height:80%;
+    }
+
+    .table-borderless{
+  font-size: 30px;
+
+ }
+
+</style>
+<div class="d-flex align-items-center flex-column justify-content-center h-100 bg-light" id="header">
+    <h1 class="display-5">{{c}}:</h1>
+    <br>
+    <strong>Concentrazione Particolato (PM10)</strong>
+    <div class="progress" style="width: 50%;">
+        {% if pm10_pct >= 90 %}
+        <div class="progress-bar bg-dark" role="progressbar" style="width:{{pm10_pct}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        {% elif pm10_pct < 90 and pm10_pct >= 70 %}
+        <div class="progress-bar bg-danger" role="progressbar" style="width:{{pm10_pct}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        {% elif pm10_pct < 70 and pm10_pct >= 50 %}
+        <div class="progress-bar bg-warning" role="progressbar" style="width:{{pm10_pct}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        {% elif pm10_pct < 50 and pm10_pct >= 30 %}
+        <div class="progress-bar bg-success" role="progressbar" style="width:{{pm10_pct}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        {% elif pm10_pct < 30 %}
+        <div class="progress-bar" role="progressbar" style="width:{{pm10_pct}}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        {% endif %}
+
+      </div>
+
+        <br>
+
+      
+
+    <h1>{{pm10_pct}}%</h1> 
+    <p>del limite massimo giornaliero (50 &#x03BC;/m<sup>3</sup>)</p>
+
+
+    <div class="container">
+    <button type="button" class="btn btn-secondary" id = "table-button"><strong>Mostra Tabella</strong> </button>
+    </div>
+    <script type="text/javascript">
+
+    var i = 0;
+
+    var table_set = "Mostra"
+
+    document.getElementById("table-button").onclick = function () {
+
+
+      if(i % 2 == 0)
+      {
+        $('#tablue').show();
+        document.getElementById("table-button").innerHTML = "Nascondi Tabella"
+        i ++
+        
+      } else {
+        $('#tablue').hide();
+        document.getElementById("table-button").innerHTML = "Mostra Tabella"
+        i ++
+      }
+    
+    }
+
+
+
+    </script>
+    <div class = "container" id ="tablue" style="display:none;">
+    <table class="table table-sm table-borderless">
+        <thead>
+          <tr>
+            <th style = "width:5%" scope="col">Inquinante</th>
+            <th style = "width:5%" scope="col">Media Giornalieria(&#x03BC;/m<sup>3</sup>)</th>
+            <th style = "width:5%" scope="col">Valori Limite(&#x03BC;/m<sup>3</sup>)</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for element in poll_dict %}
+          {% if poll_dict[element] != None %}
+          <tr>
+            {% if element == 'o3' %}
+            <td>Ozono (O<sub>3</sub>)</td>
+            {% elif element == 'no2' %}
+            <td>Diossido di Azoto (NO<sub>2</sub>)</td>
+            {% else %}
+            <td>Particolato ({{element}})</td>
+            {% endif %}
+            <td>{{int(poll_dict[element])}}</td> 
+
+            {% if element == 'o3' %}
+            <td>180</td>
+            {% elif element == 'no2' %}
+            <td>40</td>
+            {% else %}
+            <td>50</td>
+            {% endif %}
+
+
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <p>Dati approvati dell'Arpac rilasciati il {{date}} </p>
+
+  {% if d == 0.0 %}
+  <strong>La stazione di rilevamento più vicina è {{n}} nelle immediate vicinanze </strong>
+  {% elif  d > 5%}
+  <strong> Attenzione! La stazione di rilevamento più vicina alla località selezionata è lontata {{d}} chilometri. I dati potrebbero non essere attendibili </strong>
+  {% else %}
+  <strong>La stazione di rilevamento più vicina è {{n}} distante {{d}} chilometri </strong>
+  {% endif %}
+
+  
+  
+  
+</div>
+
+<div class="d-flex align-items-center flex-column justify-content-center h-100 bg-light" id="header">
+    <p> I valori limite della concentrazione degli inquinanti sono stabiliti dal Decreto Legislativo n.155 del 2010 (<a href="http://www.gazzettaufficiale.it/atto/serie_generale/caricaDettaglioAtto/originario;jsessionid=qdm76qEDKiT6bljb-lLciA__.ntc-as3-guri2b?atto.dataPubblicazioneGazzetta=2010-09-15&atto.codiceRedazionale=010G0177&elenco30giorni=false">D.Lgs 155/2010</a>)
+    </p>
+  </div>
+
+
+  <script type = "text/javascript">
+  
+    $('#search_top').show();
+    $('#search-top-btn').show();
+
+    var options = {
+
+data: ["Acerno", "Acerra", "Afragola", "Agerola", "Agropoli", "Aiello del Sabato", "Ailano", "Airola", "Albanella", "Alfano", "Alife", "Altavilla Irpina", "Altavilla Silentina", "Alvignano", "Amalfi", "Amorosi", "Anacapri", "Andretta", "Angri", "Apice", "Apollosa", "Aquara", "Aquilonia", "Ariano Irpino", "Arienzo", "Arpaia", "Arpaise", "Arzano", "Ascea", "Atena Lucana", "Atrani", "Atripalda", "Auletta", "Avella", "Avellino", "Aversa", "Bacoli", "Bagnoli Irpino", "Baia e Latina", "Baiano", "Barano d'Ischia", "Baronissi", "Baselice", "Battipaglia", "Bellizzi", "Bellona", "Bellosguardo", "Benevento", "Bisaccia", "Bonea", "Bonito", "Boscoreale", "Boscotrecase", "Bracigliano", "Brusciano", "Bucciano", "Buccino", "Buonabitacolo", "Buonalbergo", "Caggiano", "Caianello", "Caiazzo", "Cairano", "Caivano", "Calabritto", "Calitri", "Calvanico", "Calvi", "Calvi Risorta", "Calvizzano", "Camerota", "Camigliano", "Campagna", "Campolattaro", "Campoli del Monte Taburno", "Campora", "Camposano", "Cancello ed Arnone", "Candida", "Cannalonga", "Capaccio Paestum", "Capodrise", "Caposele", "Capri", "Capriati a Volturno", "Capriglia Irpina", "Capua", "Carbonara di Nola", "Cardito", "Carife", "Carinaro", "Carinola", "Casagiove", "Casal di Principe", "Casal Velino", "Casalbore", "Casalbuono", "Casalduni", "Casaletto Spartano", "Casalnuovo di Napoli", "Casaluce", "Casamarciano", "Casamicciola Terme", "Casandrino", "Casapesenna", "Casapulla", "Casavatore", "Caselle in Pittari", "Caserta", "Casola di Napoli", "Casoria", "Cassano Irpino", "Castel Baronia", "Castel Campagnano", "Castel di Sasso", "Castel Morrone", "Castel San Giorgio", "Castel San Lorenzo", "Castel Volturno", "Castelcivita", "Castelfranci", "Castelfranco in Miscano", "Castellabate", "Castellammare di Stabia", "Castello del Matese", "Castello di Cisterna", "Castelnuovo Cilento", "Castelnuovo di Conza", "Castelpagano", "Castelpoto", "Castelvenere", "Castelvetere in Val Fortore", "Castelvetere sul Calore", "Castiglione del Genovesi", "Cautano", "Cava de' Tirreni", "Celle di Bulgheria", "Cellole", "Centola", "Ceppaloni", "Ceraso", "Cercola", "Cerreto Sannita", "Cervinara", "Cervino", "Cesa", "Cesinali", "Cetara", "Chianche", "Chiusano di San Domenico", "Cicciano", "Cicerale", "Cimitile", "Ciorlano", "Circello", "Colle Sannita", "Colliano", "Comiziano", "Conca dei Marini", "Conca della Campania", "Contrada", "Controne", "Contursi Terme", "Conza della Campania", "Corbara", "Corleto Monforte", "Crispano", "Cuccaro Vetere", "Curti", "Cusano Mutri", "Domicella", "Dragoni", "Dugenta", "Durazzano", "Eboli", "Ercolano", "Faicchio", "Falciano del Massico", "Felitto", "Fisciano", "Flumeri", "Foglianise", "Foiano di Val Fortore", "Fontanarosa", "Fontegreca", "Forchia", "Forino", "Forio", "Formicola", "Fragneto l'Abate", "Fragneto Monforte", "Francolise", "Frasso Telesino", "Frattamaggiore", "Frattaminore", "Frigento", "Frignano", "Furore", "Futani", "Gallo Matese", "Galluccio", "Gesualdo", "Giano Vetusto", "Giffoni Sei Casali", "Giffoni Valle Piana", "Ginestra degli Schiavoni", "Gioi", "Gioia Sannitica", "Giugliano in Campania", "Giungano", "Gragnano", "Grazzanise", "Greci", "Gricignano di Aversa", "Grottaminarda", "Grottolella", "Grumo Nevano", "Guardia Lombardi", "Guardia Sanframondi", "Ischia", "Ispani", "Lacco Ameno", "Lacedonia", "Lapio", "Laureana Cilento", "Laurino", "Laurito", "Lauro", "Laviano", "Letino", "Lettere", "Liberi", "Limatola", "Lioni", "Liveri", "Luogosano", "Lusciano", "Lustra", "Macerata Campania", "Maddaloni", "Magliano Vetere", "Maiori", "Manocalzati", "Marano di Napoli", "Marcianise", "Mariglianella", "Marigliano", "Marzano Appio", "Marzano di Nola", "Massa di Somma", "Massa Lubrense", "Melito di Napoli", "Melito Irpino", "Melizzano", "Mercato San Severino", "Mercogliano", "Meta", "Mignano Monte Lungo", "Minori", "Mirabella Eclano", "Moiano", "Moio della Civitella", "Molinara", "Mondragone", "Montaguto", "Montano Antilia", "Monte di Procida", "Monte San Giacomo", "Montecalvo Irpino", "Montecorice", "Montecorvino Pugliano", "Montecorvino Rovella", "Montefalcione", "Montefalcone di Val Fortore", "Monteforte Cilento", "Monteforte Irpino", "Montefredane", "Montefusco", "Montella", "Montemarano", "Montemiletto", "Montesano sulla Marcellana", "Montesarchio", "Monteverde", "Montoro", "Morcone", "Morigerati", "Morra De Sanctis", "Moschiano", "Mugnano del Cardinale", "Mugnano di Napoli", "Napoli", "Nocera Inferiore", "Nocera Superiore", "Nola", "Novi Velia", "Nusco", "Ogliastro Cilento", "Olevano sul Tusciano", "Oliveto Citra", "Omignano", "Orria", "Orta di Atella", "Ospedaletto d'Alpinolo", "Ottati", "Ottaviano", "Padula", "Paduli", "Pagani", "Pago del Vallo di Lauro", "Pago Veiano", "Palma Campania", "Palomonte", "Pannarano", "Paolisi", "Parete", "Parolise", "Pastorano", "Paternopoli", "Paupisi", "Pellezzano", "Perdifumo", "Perito", "Pertosa", "Pesco Sannita", "Petina", "Petruro Irpino", "Piaggine", "Piana di Monte Verna", "Piano di Sorrento", "Piedimonte Matese", "Pietradefusi", "Pietramelara", "Pietraroja", "Pietrastornina", "Pietravairano", "Pietrelcina", "Pignataro Maggiore", "Pimonte", "Pisciotta", "Poggiomarino", "Polla", "Pollena Trocchia", "Pollica", "Pomigliano d'Arco", "Pompei", "Ponte", "Pontecagnano Faiano", "Pontelandolfo", "Pontelatone", "Portici", "Portico di Caserta", "Positano", "Postiglione", "Pozzuoli", "Praiano", "Prata di Principato Ultra", "Prata Sannita", "Pratella", "Pratola Serra", "Presenzano", "Prignano Cilento", "Procida", "Puglianello", "Quadrelle", "Qualiano", "Quarto", "Quindici", "Ravello", "Raviscanina", "Recale", "Reino", "Riardo", "Ricigliano", "Rocca d'Evandro", "Rocca San Felice", "Roccabascerana", "Roccadaspide", "Roccagloriosa", "Roccamonfina", "Roccapiemonte", "Roccarainola", "Roccaromana", "Rocchetta e Croce", "Rofrano", "Romagnano al Monte", "Roscigno", "Rotondi", "Rutino", "Ruviano", "Sacco", "Sala Consilina", "Salento", "Salerno", "Salvitelle", "Salza Irpina", "San Bartolomeo in Galdo", "San Cipriano d'Aversa", "San Cipriano Picentino", "San Felice a Cancello", "San Gennaro Vesuviano", "San Giorgio a Cremano", "San Giorgio del Sannio", "San Giorgio La Molara", "San Giovanni a Piro", "San Giuseppe Vesuviano", "San Gregorio Magno", "San Gregorio Matese", "San Leucio del Sannio", "San Lorenzello", "San Lorenzo Maggiore", "San Lupo", "San Mango Piemonte", "San Mango sul Calore", "San Marcellino", "San Marco dei Cavoti", "San Marco Evangelista", "San Martino Sannita", "San Martino Valle Caudina", "San Marzano sul Sarno", "San Mauro Cilento", "San Mauro la Bruca", "San Michele di Serino", "San Nazzaro", "San Nicola Baronia", "San Nicola la Strada", "San Nicola Manfredi", "San Paolo Bel Sito", "San Pietro al Tanagro", "San Pietro Infine", "San Potito Sannitico", "San Potito Ultra", "San Prisco", "San Rufo", "San Salvatore Telesino", "San Sebastiano al Vesuvio", "San Sossio Baronia", "San Tammaro", "San Valentino Torio", "San Vitaliano", "Santa Croce del Sannio", "Santa Lucia di Serino", "Santa Maria a Vico", "Santa Maria Capua Vetere", "Santa Maria la Carit\u00e0", "Santa Maria la Fossa", "Santa Marina", "Santa Paolina", "Sant'Agata de' Goti", "Sant'Agnello", "Sant'Anastasia", "Sant'Andrea di Conza", "Sant'Angelo a Cupolo", "Sant'Angelo a Fasanella", "Sant'Angelo a Scala", "Sant'Angelo all'Esca", "Sant'Angelo d'Alife", "Sant'Angelo dei Lombardi", "Sant'Antimo", "Sant'Antonio Abate", "Sant'Arcangelo Trimonte", "Sant'Arpino", "Sant'Arsenio", "Sant'Egidio del Monte Albino", "Santo Stefano del Sole", "Santomenna", "Sanza", "Sapri", "Sarno", "Sassano", "Sassinoro", "Saviano", "Savignano Irpino", "Scafati", "Scala", "Scampitella", "Scisciano", "Senerchia", "Serino", "Serramezzana", "Serrara Fontana", "Serre", "Sessa Aurunca", "Sessa Cilento", "Siano", "Sicignano degli Alburni", "Sirignano", "Solofra", "Solopaca", "Somma Vesuviana", "Sorbo Serpico", "Sorrento", "Sparanise", "Sperone", "Stella Cilento", "Stio", "Striano", "Sturno", "Succivo", "Summonte", "Taurano", "Taurasi", "Teano", "Teggiano", "Telese Terme", "Teora", "Terzigno", "Teverola", "Tocco Caudio", "Tora e Piccilli", "Torchiara", "Torella dei Lombardi", "Torraca", "Torre Annunziata", "Torre del Greco", "Torre Le Nocelle", "Torre Orsaia", "Torrecuso", "Torrioni", "Tortorella", "Tramonti", "Trecase", "Trentinara", "Trentola Ducenta", "Trevico", "Tufino", "Tufo", "Vairano Patenora", "Vallata", "Valle Agricola", "Valle dell'Angelo", "Valle di Maddaloni", "Vallesaccarda", "Vallo della Lucania", "Valva", "Venticano", "Vibonati", "Vico Equense", "Vietri sul Mare", "Villa di Briano", "Villa Literno", "Villamaina", "Villanova del Battista", "Villaricca", "Visciano", "Vitulano", "Vitulazio", "Volla", "Volturara Irpina", "Zungoli"],
+
+list: {	
+match: {
+enabled: true
+}
+}
+}
+
+
+  
+    $('#search_top').easyAutocomplete(options);
+  </script>
+
+
+
+{% endblock %}

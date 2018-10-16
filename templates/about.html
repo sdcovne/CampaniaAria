@@ -1,0 +1,68 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+
+<style>
+        html,body{
+          width:100%;
+          margin:0;
+            height:100%;
+        }
+
+        .par{
+            font-size:20px;
+        }
+
+</style>
+
+
+<div class="d-flex flex-column h-100 bg-light" id="header">
+    <div class = "container">
+
+        <h1>Attenzione</h1>
+        <p class="text-justify par">
+            I dati riguardo le concentrazioni degli inquinanti non si riferiscono al luogo/comune selezionato ma a quelli misurati dal rilevatore ARPAC più vicino. Purtroppo il numero e la localizzazione dei rilevatori ARPAC non sono tali da fornire sempre indicazioni attendibili su tutto il territorio. Dove specificato, la distanza tra la località scelta ed il rilevatore più vicino è troppo grande e dunque i dati riportati potrebbero non corrispondere alla realtà.  
+    </p>
+    <br>
+    <h1>Perché ho creato questo sito?</h1>
+
+    <p class="text-justify par">  Ho creato questo sito per fornire uno strumento rapido e semplice da usare per monitorare la qualità dell'aria
+nei comuni campani. 
+
+Non possiamo fuggire dal cielo sotto cui viviamo: interessarsi alla qualità dell'aria che respiriamo è il primo passo per 
+essere più consapevoli del mondo che ci circonda.
+    </p>
+
+    <br>
+
+    <h1>Che cosa fa questo sito?</h1>
+
+    <p class="text-justify par">Questo sito non raccoglie dati sul territorio ma ripropone, in modo da renderne più facile la visualizzazione, i dati raccolti da ARPAC Campania e messi a disposizione del pubblico sul loro sito. 
+        In particolari vengono riportati
+        i dati riguardanti i tre principali inquinanti prodotti da attività umane presenti nell'atmosfera: diossido di azoto (NO<sub>2</sub>), ozono (O<sub>3</sub>) e particolato PM10 (conosciuto come "polveri sottili").
+    </p>
+
+    <br>
+
+    
+
+    <h1>Perché il sito si concentra solo su tre inquinanti?</h1>
+    <p class="text-justify par">Nell'atmosfera sono presenti numerose sostante pericolose per la salute umana ed elencare la concentrazione di ognuna di queste sostanze renderebbe più complicata la navigazione del sito. Per questo motivo, ho scelto di evidenziare le concentrazione dei tre inquinanti che hanno un maggiore impatto sulla salute umana, stando alla letteratura scientifica.</p>
+
+    <br>
+
+
+    <h1>Questo progetto mi interessa, come posso contribuire?</h1>
+
+    <p class="text-justify par">Se sei interessato a questo progetto, ci sono diversi modi in cui puoi contribuire al suo miglioramento. Se hai idee da proporre e/o critiche da avanzare potresti scrivermi un'email, compilando il form che trovi su <a href="/scrivimi">questa pagina</a>. Se ti interessi di informatica, potresti dare un'occhiate al codice del sito, presente su <a href="">GitHub</a>, e aiutarmi a renderlo più efficiente. 
+        Se invece non hai tempo o voglia per fare queste cose potresti contribuire economicamente, con una <a href="/donazioni">donazione</a>. Se non ne hai la possibilità puoi sempre condividere il link del sito sul social network che preferisci o parlarne con i tuoi amici.
+    </p>
+    
+    </div>
+
+    
+</div>
+
+<div class="d-flex flex-column h-100 bg-light" id="header"></div>
+
+{% endblock %}

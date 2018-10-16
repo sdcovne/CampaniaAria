@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<style>
+        html,body{
+          width:100%;
+          margin:0;
+            height:100%;
+        }
+
+         .par{
+            font-size:20px;
+        }
+
+</style>
+
+
+<div class="d-flex flex-column h-100 bg-light" id="header">
+    <div class = "container">
+    <h1>Donazioni</h1>
+    <br>
+    <p class="text-justify par">  Ho creato questo sito per offrire alla communità un servizio comodo e semplice da usare 
+     per monitorare la qualità dell'aria. Questo sito sarà sempre gratuito e,
+        per agevolare la navigazione, non ospiterà banner pubblicitari. Tuttavia, portare avanti (e migliorare) questo progetto
+        costa tempo, fatica e denaro. Se il sito ti è stato utile potresti supportarlo ed offrirmi una tazza di caffè per permettermi di continuare a lavorarci su!
+    </p>
+
+    <p class="par">Puoi usare Paypal.me cliccando al link qui sotto</p>
+
+    <a class="btn btn-primary" href="https://www.paypal.me/sdcovone" role="button"><i class="fab fa-paypal"></i></a>
+
+    <br>
+    
+    </div>
+</div>
+
+{% endblock %}
